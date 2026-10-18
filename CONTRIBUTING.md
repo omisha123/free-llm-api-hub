@@ -155,6 +155,8 @@ Commit messages: AI-assisted contributions are welcome when you have verified th
 
 A human maintainer reviews and is responsible for every merge. Automated review comments (CodeRabbit) are advisory: a person makes the call, and you don't need to reply to the bot. We resolve every review conversation, from people or bots, before merging, either by changing the code or by noting why not.
 
+If your pull request falls behind `main`, we update it before merging. When that update only changes regenerated files, the review still holds: it is tied to the patch of the files you changed under `data/`, `scripts/` and `docs/`, and we check that this patch is exactly the one we reviewed. If any of those lines changes, the pull request is reviewed again. The *Dataset integrity* check has to be green either way.
+
 ## Hacktoberfest
 
 October is Hacktoberfest month, but Hacktoberfest 2026 no longer rewards pull requests (it is about learning and building with open-source AI), so a pull request here does not earn Hacktoberfest swag or points, and we do not promise any. Contributions are welcome all year. The [good first issues](https://github.com/pacocartones/free-llm-api-hub/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) are the best place to start (see [Good first issues](#good-first-issues) for what qualifies). Your name goes in [CONTRIBUTORS.md](CONTRIBUTORS.md) when a pull request is merged.
@@ -173,3 +175,19 @@ GitHub holds workflow runs from a **first-time contributor** until a maintainer 
 
 - **No regeneration bot — the author ships the derived files.** There is no `bot/regenerate`: `main` requires the "Dataset integrity" check, and a change is complete when its regenerated files are committed in the same PR. After editing `data/providers.json` (or `data/programs.json`), run `npm run build` (and `npm run og` if the OG check flags drift), commit the regenerated files together with the data change, and push. The "Dataset integrity" check fails until they are in sync.
 - **Nothing runs on a schedule.** Re-verification, badge refresh, model samples and the live probe are all local on-demand tasks — see [docs/update-playbook.md](docs/update-playbook.md). This project does not depend on GitHub Actions minutes.
+
+### Branch names and commit identity
+
+- **If you contribute from a fork, none of the branch rules apply to you:** name your branch as you
+  like. They are for the maintainers' branches in this repository.
+- **Maintainers' branch names:** `<type>/<short-slug>`, lower case with hyphens, where the type is
+  the conventional-commit type: `feat/`, `fix/`, `docs/`, `data/`, `test/`, `ci/`, `chore/` or `refactor/`. Example: `fix/sitemap-canonical`. Branch names
+  describe the change, not who made it or an internal ticket. Reserved: `main`, `changeset-release/main` and `bot/*`.
+- **What happens to branches:** in this repository, merged and closed pull requests keep their
+  commits and the branch is deleted afterwards; branches in your fork are yours.
+- **Commit identity:** maintainers commit as
+  `Paco Cartones <253313177+pacocartones@users.noreply.github.com>` (how the project is maintained,
+  including the part done by AI agents under human oversight, is described in the README ([How this project is maintained](README.md#how-this-project-is-maintained))), and
+  `scripts/check-commit-policy.sh` checks maintainer commits only. If you do not want your email in
+  the public history, use your GitHub noreply address
+  ([how](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address)).
